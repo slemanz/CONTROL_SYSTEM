@@ -1,0 +1,344 @@
+%==========================================
+%  			EXERCÍCIOS
+%===========================================
+
+\begin{flushleft}
+	 \textcolor{myBlue}{\textbf{\Large{3 EXERCÍCIOS }}}
+\end{flushleft}
+
+\begin{flushleft}
+	 \textcolor{myBlue}{\textbf{\large{3.1 Sistema de ordem superior }}}
+\end{flushleft}
+Para a função de transferência abaixo, determine o tempo de acomodação (\(T_s\)), instante de pico (\(T_p\)) e sobreajuste (\(\% SP\)), assumindo dominância de segunda ordem. Essa suposição é valida?
+
+$$ G(s)=\dfrac{1}{s^3+24,2s^2+109s+500} $$
+
+\noindent \textbf{Resolução: }
+
+Primeiro vemos que temos a equação característica de
+
+\[ s^3 + 24,2s^2  + 109s + 500\] 
+
+Podemos aproximar de uma equação caracerística de segundo grau,
+
+\[ (s^2 + 2\zeta \omega_n s + \omega_n^2)(s+p)  \]
+
+Expandindo essa aproximação e colocando os valores de tempo \(s\) em evidência, temos
+
+\[ s^3 + 2 \omega_n \zeta s^2 + \omega_n^2 s +ps^2 +2 \omega_n \zeta p s + p\omega_n^2  \]
+\[ s^3 + (2\omega_n \zeta + p)s^2 + (\omega_n^2 + 2\omega_n \zeta p)s + p\omega_n^2 \]
+
+Com isso temos que
+
+\[ s^3 + 24,2s^2  + 109s + 500 = s^3 + (2\omega_n \zeta + p)s^2 + (\omega_n^2 + 2\omega_n \zeta p)s + p\omega_n^2 \]
+
+Igualando conforme seu termo \(s \) teremos as seguintes expressões
+
+\begin{equation}
+24,2 = 2\omega_n \zeta + p \Rightarrow \omega_n \zeta = \dfrac{24,2 - p}{2}
+\end{equation}
+
+\begin{equation}
+109 = \omega_n^2 + 2\omega_n \zeta p
+\end{equation}
+
+\begin{equation}
+ 500 = p\omega_n^2 \Rightarrow \omega_n^2 = \dfrac{500}{p}
+\end{equation}
+
+Trabalhando essas equações podemos achar o valor de \( \omega_n\) e \( \zeta \), começando substituindo a eq. 1 e 3 na eq. 2, temos
+
+\[ 109 = \dfrac{500}{p} + 2 \dfrac{24,2-p}{2}p \]
+
+\[109p = 500 + 24,2p^2-p^3 \]
+
+\[ p^3 - 24,2p^2+109p -500 = 0 \]
+
+\[ \boxed{p_1 = 20 \,\,\mathrm{ou}\,\, p_{2,3}=2,1\pm 4,54i} \]
+
+\newpage
+
+Vamos optar por usar o valor real para achar os valores, ou seja, \(p_1\), com isso temos
+
+\[ \omega_n = \sqrt{\dfrac{500}{p_1}} = \sqrt{\dfrac{500}{20}} \]
+
+\[\boxed{ \omega_n = 5 \,\, \mathrm{rad/s}} \]
+
+\[ \zeta = \dfrac{24,2-p}{2\omega_n} = \dfrac{24,2 - 20}{2\cdot 5} \]
+
+\[ \boxed{\zeta = 0,42} \]
+
+Com esses valores basta aplicar nas fórmulas de sistemas de segunda ordem para acharmos os valores aproximados, começando com \( T_s\) e considerando uma tolerância de \( 2\%\) 
+
+\[ T_s = \dfrac{4}{\omega_n \zeta} = \dfrac{4}{5\cdot 0,42}  \]
+
+\[ \boxed{T_s \approx 1,90 \,\mathrm{s}} \]
+
+Já para \( \% SP \)
+
+\[ \% SP = e^{\frac{-\zeta \pi}{\sqrt{1-\zeta^2}}}\cdot 100 = e^{\frac{-0,42 \pi}{\sqrt{1-0,42^2}}}\cdot 100\]
+
+\[ \boxed{\% SP \approx 23,4\%} \]
+
+E por último \( T_p \)
+
+\[ T_p = \dfrac{\pi}{\omega_n \sqrt{1 - \zeta^2}} = \dfrac{\pi}{5\sqrt{1-0,42^2}} \] 
+
+\[ \boxed{T_p \approx 0,692 \, \mathrm{s}} \]
+
+%
+% COMPROVAÇÃO
+%
+\noindent \textbf{Comprovação: }
+
+
+Para comprovar se essa resposta está certa, podemos usar ferramentas de software, nesse caso será usado python, primeiro plotando os polos e zeros, o código usado segue:
+
+\begin{lstlisting}
+import numpy as np
+from scipy import signal
+import matplotlib.pyplot as plt
+
+# Definir os numeradores e denominadores
+num = [1]  # Numeradores
+den = [1, 24.2, 109, 500]  # denominadores
+
+tf = signal.TransferFunction(num, den)
+
+# Calcular Polos e zeros
+poles = tf.poles
+zeros = tf.zeros
+
+# Plot polos e zeros
+plt.figure(figsize=(6, 6))
+plt.scatter(np.real(poles), np.imag(poles), marker='x', color='red', label='Poles')
+plt.scatter(np.real(zeros), np.imag(zeros), marker='o', color='blue', label='Zeros')
+plt.axhline(0, color='black', linewidth=1.7)
+plt.axvline(0, color='black', linewidth=1.7)
+plt.xlabel('Real')
+plt.ylabel('Imaginario')
+plt.title('Polos e Zeros')
+plt.grid(True)
+plt.show()
+\end{lstlisting}
+
+Com tal código obtivemos o seguinte plot:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{Figure_polos.png}
+\end{figure}
+
+Percebe-se  que os valores são exatamente os que calculamos anteriormente, agora comprovado via software. \\
+
+Além disso, podemos plotar as duas funções a inicial (real) e a que aproximamos para ver a diferença, para isso foi usado o seguinte código em python: \vspace{30pt}
+
+
+\begin{lstlisting}
+from scipy import signal
+import matplotlib.pyplot as plt
+
+# Definir funcoes de modo num/den
+
+#Funcao de Transferencia Real
+num1 = [1]
+den1 = [1, 24.2, 109, 500] # s^3 + 24.2s^2 + 109s + 500
+
+# Funcao aproximada de segundo grau
+num2 = [1]
+den2 = [20, 84, 500] # 20*(s^2 + 4.2s + 25)
+
+# Calculo das funcoes e resposta degrau no dominio do tempo t(s)
+lti1 = signal.lti(num1,den1)
+time, y_amp1=signal.step(lti1)
+
+lti2 = signal.lti(num2,den2)
+time2, y_amp2=signal.step(lti2)
+
+# FT = Funcao de Transferencia
+# plot das funcoes
+plt.xlabel('Tempo (s)')
+plt.ylabel('Resposta ao Degrau')
+plt.plot(time, y_amp1, label='FT Real')
+plt.plot(time2, y_amp2,label='FT Aproximada')
+plt.title('FT Real x Aproximada')
+plt.legend()
+plt.show()
+\end{lstlisting}
+\vspace{30pt}
+
+Onde obtivemos o seguinte gráfico, o qual comprova a assertividade do método usado:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{Figure_fts.png}
+\end{figure}
+
+
+
+\begin{flushleft}
+	 \textcolor{myBlue}{\textbf{\large{3.2 Critério de Routh }}}
+\end{flushleft}
+Considere o sistema em malha fechada mostrado na Figura.
+Determine a faixa de valores de K para estabilidade. Assuma que \(K > 0\).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+
+\sbEntree{E}
+\sbComp{comp}{E}
+\sbRelier[$R(s)$]{E}{comp}
+\sbBloc{B}{$K$}{comp}
+\sbRelier{comp}{B}
+\sbBloc{C}{$\dfrac{(s-2)}{(s+1)(s^2 +6s+25)}$}{B}
+\sbRelier{B}{C}
+\sbSortie[4]{S}{C}
+\sbRelier{C}{S}
+\sbNomLien[0.8]{S}{$C(s)$} \sbRenvoi{C-S}{comp}{}
+
+\end{tikzpicture}
+\end{figure}
+
+\noindent \textbf{Resolução: }
+
+Deve-se começar simplificando o digrama de blocos para uma só expressão, primeiro faz a multiplicação dos blocos
+
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+
+\sbEntree{E}
+\sbComp{comp}{E}
+\sbRelier[$R(s)$]{E}{comp}
+\sbBloc{B}{$\dfrac{K\cdot (s-2)}{(s+1)(s^2 +6s+25)}$}{comp}
+\sbRelier{comp}{B}
+\sbSortie[4]{S}{B}
+\sbRelier{B}{S}
+\sbNomLien[0.8]{S}{$C(s)$}
+\sbRenvoi{B-S}{comp}{}
+
+\end{tikzpicture}
+\end{figure}
+
+E assim com a realimentação negativa ficamos com
+\newpage
+
+\[ \dfrac{C(s)}{R(s)} = \dfrac{\frac{K\cdot (s-2)}{(s+1)(s^2+6s+25)}}{1+ \frac{K\cdot (s-2)}{(s+1)(s^2+6s+25)}\cdot 1} = \dfrac{K(s -2)}{(s+1)(s^2+6s+25)+K(s-2)} \] \\
+
+Simplificando nosso termo \( \frac{C(s)}{R(s)} \), temos \\
+
+\[ \dfrac{C(s)}{R(s)} = \dfrac{K(s-2)}{s^3 + 7s^2 + s(31 + K)+25 -2K} \] \\
+
+ou \\
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+
+\sbEntree{E}
+\sbNomLien[0.8]{E}{$R(s)$}
+\sbBloc[3]{B}{$\dfrac{K(s-2)}{s^3 + 7s^2 + s(31 + K)+25 -2K}$}{E}
+\sbRelier{E}{B}
+\sbSortie[3]{S}{B}
+\sbRelier{B}{S}
+\sbNomLien[0.8]{S}{$C(s)$}
+
+
+\end{tikzpicture}
+\end{figure}
+
+Com isso temos que \( K > 0 \) para ser um sistema estável, então a equação
+
+\[ s^3 + 7s^2 + s(31 + K)+25 -2K \]
+
+Fica
+
+\begin{table}[H]
+	\centering
+    \begin{tabular}{ccc}
+        $s^3$ & $1$   & $31+k$ \\
+        $s^2$ & $7$   & $25-2k$ \\
+        $s^1$ & $b_1$ & $0$ \\
+        $s^0$ & $c_1$ &  \\
+    \end{tabular}
+\end{table}
+
+Após isso basta calcular nossos termos para determinar a faixa
+
+\[ b_1 =  \dfrac{
+-\begin{bmatrix}
+1 & (31+K) \\
+7 & (25-2K)  
+\end{bmatrix}
+}{7} = \dfrac{-(25-2K-217-7K)}{7} = \dfrac{192+9K}{7} \]
+
+Assim ficamos com a inequação
+
+\[ \dfrac{192+9K}{7} > 0 \]
+\[ 192+9K > 0 \]
+\[ 9K > -192 \]
+\[  K > \dfrac{-192}{9} \]
+\[  K > -21,33 \]
+
+Como \( K \), nesse caso ficou negativo, ou seja é instável, deve ser \( K > 0 \).
+\newpage
+
+Agora calculamos o outro termo
+
+
+\[ c_1 =  \dfrac{
+-\begin{bmatrix}
+7   & (25-2K) \\
+b_1 & 0  
+\end{bmatrix}
+}{b_1} = \dfrac{b_1 (25-2K)}{b_1} = 25-2K \]
+
+Resolvendo a inequação
+
+
+\[ 25-2K > 0 \]
+\[ -2K > -25 \]
+\[ 2K < 25 \]
+\[ K < \dfrac{25}{2} \]
+\[ K < 12,5 \]
+
+Assim fica a resposta final de
+
+\[ \boxed{12,5 > K > 0} \]
+
+
+
+\newpage
+
+\begin{flushleft}
+	 \textcolor{myBlue}{\textbf{\Large{4 CONCLUSÃO }}}
+\end{flushleft}
+
+Sistemas de ordem superior na teoria de controle fornecem uma representação detalhada e realista de sistemas dinâmicos complexos. Compreender e analisar sistemas de ordem superior por meio de analogias, representação de espaço de estados e análise de função de transferência permite que os engenheiros projetem estratégias de controle robustas. \\
+
+O Critério de Estabilidade de Routh é uma ferramenta valiosa na teoria de controle para analisar a estabilidade de sistemas lineares. Ao construir a Tabela de Routh e examinar seus elementos, é possível determinar a estabilidade do sistema sem a necessidade de calcular diretamente os polos. Isso torna o critério uma abordagem eficiente e conveniente para avaliar a estabilidade de sistemas de controle, projetar controladores apropriados e analisar a robustez do sistema em relação a incertezas e variações nos parâmetros.
+
+
+
+\newpage
+
+\begin{flushleft}
+	 \textcolor{myBlue}{\textbf{\Large{5 REFERÊNCIAS }}}
+\end{flushleft}
+
+\noindent OGATA, Katsuhiko. Modern Control Engineering. 5th ed. Upper Saddle River, NJ: Prentice Hall, 2010.\\
+
+\noindent DORF, Richard C.; BISHOP, Robert H. Modern Control Systems. 12th ed. Upper Saddle River, NJ: Prentice Hall, 2010. \\
+
+\noindent NISE, Norman S. Control Systems Engineering. 7th ed. Hoboken, Wiley, 2014.\\
+
+\noindent KUO, Benjamin C. Automatic Control Systems. 10th ed. Hoboken, John Wiley \& Sons, 2017.\\
+
+\noindent PARASKEVOPOULOS, P.N. Modern Control Engineering. 1ª ed. CRC Press, 2001.\\
+
+\noindent The Ryder Project. Disponível em: https://www.youtube.com/@theryderproject5053. Acesso em: 18 jun. 2023.\\
+
+\noindent Sergio A. Castaño. Disponível em: https://www.youtube.com/@SergioACGiraldoBR. Acesso em: 18 jun. 2023.\\
+
+\noindent Controltheoryorg. Disponível em: https://www.youtube.com/@controltheoryorg. Acesso em: 18 jun. 2023.
