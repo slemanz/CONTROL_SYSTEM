@@ -62,7 +62,7 @@ Gc_wm=20*log10(Kc/sqrt(a))
 % Olhar no primeiro grafico!!!
 
 % note que em torno da fequencia 48,7 rad/s a planta tem ganho -Gc_wm (em dB).
-% Portanto -> valor encontrado em 28.3 dB
+% Portanto -> valor encontrado em -47.9 dB
 wm=48.7; 
 
 %% Determinar o valor de T

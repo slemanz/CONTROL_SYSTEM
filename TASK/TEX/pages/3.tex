@@ -26,9 +26,9 @@
 
 \noindent \textbf{Solução:} \\
 
-\noindent \textbf{1. Definir o numero do tipo da função de transferência da planta:} \\
+\noindent \textbf{1. Definir o número do tipo da função de transferência da planta:} \\
 
-Tem-se por definição que o tipo da função se dá pelo numero de polos na origem, no casa da função $G(s)$, existe 2 polos $s_1 = 0$ e $s_2 = -15$. Logo, temos apenas um polo na origem {\color{red}a função de transferência da planta é do tipo 1}.
+Tem-se por definição que o tipo da função se dá pelo número de polos na origem, no caso da função $G(s)$, existe 2 polos $s_1 = 0$ e $s_2 = -15$. Logo, temos apenas um polo na origem {\color{red}a função de transferência da planta é do tipo 1}.
 
 No Matlab a função da planta foi definida como $G$, tendo em vista sua forma simplificada:
 
@@ -138,23 +138,23 @@ Com isso encontramos o gráfico da \textbf{Figura 2}, onde temos {\color{red}mf 
 
 \textbf{4. Calcular a defasagem máxima do compensador por avanço de fase, os parâmetros $\alpha$ e T do compensador.}\\
 
-Como a margem de fase é aproximadamente $21,9^o$ a frequencia em torno de $37,3$ rad/s. Podemos calcular o $\phi_m$ (defasagem máxima), considerando a margem de fase de $45^o$ específicado e somando $5^o$ como folga, por conta de que a frequência de cruzamente será sempre maior pela ação do controlador. Assim teremos, 
+Como a margem de fase é aproximadamente $21,9^o$ a frequência em torno de $37,3$ rad/s. Podemos calcular o $\phi_m$ (defasagem máxima), considerando a margem de fase de $45^o$ específicado e somando $5^o$ como folga, por conta de que a frequência de cruzamento será sempre maior pela ação do controlador. Assim teremos, 
 
 \[\phi_m = 45 - 21,9 + 5\]
 
 {\color{red}\[ \boxed{\phi_m = 28,1^o} \]}
 
-Determinando a posição "relativa" do polo em relação ao zero, a razao entre as frequências do zero e do polo, que é igual a $\alpha$, que é dado por,
+Determinando a posição ``relativa'' do polo em relação ao zero, a razão entre as frequências do zero e do polo, que é igual a $\alpha$, que é dado por,
 
 \[ \alpha = \dfrac{1-sen(\frac{\phi_m \pi}{180})}{1+sen(\frac{\phi_m \pi}{180})} = \dfrac{1-sen(\frac{28,1\pi}{180})}{1+sen(\frac{28,1 \pi}{180})} \]
 
 {\color{red}\[ \boxed{\alpha = 0,3596} \]}
 
-Determinando a "localização" da resposta em frequência do controlador, ou seja, encontrar wm, frequência em que ocorre $\phi_m$. Nessa frequência o ganho do controlador é (em dB):
+Determinando a ``localização'' da resposta em frequência do controlador, ou seja, encontrar $\omega_m$, frequência em que ocorre $\phi_m$. Nessa frequência o ganho do controlador é (em dB):
 
 \[ Gc_{wm}=20log_{10}(Kc\sqrt(\alpha)) = 20log_{10}(\frac{150}{\sqrt{0,3596}}) = 47.96 \]
 
-Para que wm seja a nova frequência de cruzamento, o ganho de malha nessa fequencia deve ser 1. Ou seja, o ganho da planta (sem Kc obviamente) deve ser o inverso do ganho do controlador nessa frequência. Em dB, o ganho da planta deve ser o recíproco (negativo) do ganho do controlador, logo deve ser igual a $-47.96$ dB. Utilizando manualmente um data tip do matlab na \textbf{Figura 1}, podemos encontrar o valor de $\omega_m$:
+Para que $\omega_m$ seja a nova frequência de cruzamento, o ganho de malha nessa fequencia deve ser 1. Ou seja, o ganho da planta (sem Kc obviamente) deve ser o inverso do ganho do controlador nessa frequência. Em dB, o ganho da planta deve ser o recíproco (negativo) do ganho do controlador, logo deve ser igual a $-47.96$ dB. Utilizando manualmente um data tip do matlab na \textbf{Figura 1}, podemos encontrar o valor de $\omega_m$:
 
 \begin{figure}[H]
   \centering
@@ -162,7 +162,7 @@ Para que wm seja a nova frequência de cruzamento, o ganho de malha nessa fequen
   \caption{Data tip no primeiro plot para achar $\omega_m$}
 \end{figure} \newpage
 
-Nota-se que em torno da fequencia $48,7$ rad/s a planta tem ganho $-Gc_{wm}$ (em dB). Portanto o valor encontrado em 28.3 dB é,
+Nota-se que em torno da fequencia $48,7$ rad/s a planta tem ganho $-Gc_{wm}$ (em dB). Portanto o valor encontrado em $-47.9$ dB é,
 
 {\color{red} \[ \boxed{\omega_m = 48,7} \]}
 
@@ -189,7 +189,7 @@ T=1/(wm*sqrt(a))
 
 \noindent \textbf{5. Escrever a função de transferência do compensador C(s).}\\
 
-Com os parâmetros encontrados basta substitui-los,
+Com os parâmetros encontrados basta substituí-los,
 
 \[ C(s) = K_c \dfrac{Ts+1}{\alpha T s + 1} = 150\dfrac{0,0342s + 1}{0,0342\cdot 0,3596 s + 1}\]
 
@@ -227,7 +227,7 @@ Com isso tivemos o seguinte gráfico da planta do sistema compensado:
   \caption{Bode da planta do sistema compensado}
 \end{figure}
 
-Com isso encontramos o ganho de fase igual a $45,1^o$, o que fica muito próximo do específicado no projeto.
+Com isso encontramos o ganho de fase igual a $45,1^o$, o que fica muito próximo do especificado no projeto.
 
 E a margem de ganho encontrada foi de $\infty$, o que significa que o sistema ficará estável, não importa o quanto for aumentado o ganho.
 
@@ -273,9 +273,9 @@ Assim, foi encontrado os seguintes gráficos que deixam claro o efeito do nosso 
 %             PARTE 8
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\noindent \textbf{7. Obter o erro estático e compará-lo com o erro estático especificado. .}\\
+\noindent \textbf{8. Obter o erro estático e compará-lo com o erro estático especificado. .}\\
 
-Para achar o valor do erro estático foi utilazado o matlab, foi encontrado o valor numérico e feito o gráfico comparando a resposta a rampa dos sistemas com e sem compensador, segue o código:
+Para achar o valor do erro estático foi utilizado o matlab, foi encontrado o valor numérico e feito o gráfico comparando a resposta a rampa dos sistemas com e sem compensador, segue o código:
 
 \begin{lstlisting}[style=matlab]
 t=0:0.01:2;
